@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tradutor Multilíngue</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/originals/03/06/fc/0306fc0b350a052f5fd9504fdd6044cb.jpg'); 
+            background-size: 110% auto;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); 
+            z-index: -1; 
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .language-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 100%;
+            z-index: 1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            input, select, button {
+                font-size: 14px;
+            }
+
+            #resultado {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tradutor Multilíngue</h1>
+
+    <input type="text" id="frase" placeholder="Digite uma frase">
+
+    <div class="language-select">
+        <div id="selected-language" onclick="toggleDropdown()">Selecione um idioma</div>
+        <div class="dropdown" id="language-dropdown">
+            <div class="dropdown-item" onclick="selectLanguage('ingles')">
+                <img src="https://flagcdn.com/us.svg" alt="Inglês"> Inglês
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('mandarim')">
+                <img src="https://flagcdn.com/cn.svg" alt="Mandarim"> Mandarim
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('hindi')">
+                <img src="https://flagcdn.com/in.svg" alt="Hindi"> Hindi
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('espanhol')">
+                <img src="https://flagcdn.com/es.svg" alt="Espanhol"> Espanhol
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('arabe')">
+                <img src="https://flagcdn.com/sa.svg" alt="Árabe"> Árabe
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('bengali')">
+                <img src="https://flagcdn.com/bd.svg" alt="Bengali"> Bengali
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('frances')">
+                <img src="https://flagcdn.com/fr.svg" alt="Francês"> Francês
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('russo')">
+                <img src="https://flagcdn.com/ru.svg" alt="Russo"> Russo
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('urdu')">
+                <img src="https://flagcdn.com/pk.svg" alt="Urdu"> Urdu
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('indonesio')">
+                <img src="https://flagcdn.com/id.svg" alt="Indonésio/Malaio"> Indonésio/Malaio
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('alema')">
+                <img src="https://flagcdn.com/de.svg" alt="Alemão"> Alemão
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('japones')">
+                <img src="https://flagcdn.com/jp.svg" alt="Japonês"> Japonês
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('swahili')">
+                <img src="https://flagcdn.com/tz.svg" alt="Swahili"> Swahili
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('marathi')">
+                <img src="https://flagcdn.com/in.svg" alt="Marathi"> Marathi
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('telugu')">
+                <img src="https://flagcdn.com/in.svg" alt="Telugu"> Telugu
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('turco')">
+                <img src="https://flagcdn.com/tr.svg" alt="Turco"> Turco
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('tamil')">
+                <img src="https://flagcdn.com/in.svg" alt="Tâmil"> Tâmil
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('vietnamita')">
+                <img src="https://flagcdn.com/vn.svg" alt="Vietnamita"> Vietnamita
+            </div>
+            <div class="dropdown-item" onclick="selectLanguage('coreano')">
+                <img src="https://flagcdn.com/kr.svg" alt="Coreano"> Coreano
+            </div>
+        </div>
+    </div>
+
+    <button onclick="traduzir()">Traduzir</button>
+
+    <p id="resultado"></p>
+</div>
+
+<script>
+    const dicionarios = {
+        ingles: {
+            "oi": "hi",
+            "olá": "hello",
+            "mundo": "world",
+            "como": "how",
+            "vai": "are",
+            "você": "you",
+            "bom": "good",
+            "dia": "day",
+            "noite": "night",
+            "gato": "cat",
+            "cachorro": "dog",
+            "pássaro": "bird"
+        },
+        mandarim: {
+            "oi": "嗨",
+            "olá": "你好",
+            "mundo": "世界",
+            "como": "怎么样",
+            "vai": "要",
+            "você": "你",
+            "bom": "好",
+            "dia": "日",
+            "noite": "夜",
+            "gato": "猫",
+            "cachorro": "狗",
+            "pássaro": "鸟"
+        },
+        hindi: {
+            "oi": "नमस्ते",
+            "olá": "नमस्ते",
+            "mundo": "दुनिया",
+            "como": "कैसे",
+            "vai": "है",
+            "você": "आप",
+            "bom": "अच्छा",
+            "dia": "दिन",
+            "noite": "रात",
+            "gato": "बिल्ली",
+            "cachorro": "कुत्ता",
+            "pássaro": "पक्षी"
+        },
+        espanhol: {
+            "oi": "hola",
+            "olá": "hola",
+            "mundo": "mundo",
+            "como": "cómo",
+            "vai": "vas",
+            "você": "tú",
+            "bom": "bueno",
+            "dia": "día",
+            "noite": "noche",
+            "gato": "gato",
+            "cachorro": "perro",
+            "pássaro": "pájaro"
+        },
+        arabe: {
+            "oi": "مرحبا",
+            "olá": "مرحبا",
+            "mundo": "عالم",
+            "como": "كيف",
+            "vai": "فعل",
+            "você": "أنت",
+            "bom": "جيد",
+            "dia": "يوم",
+            "noite": "ليل",
+            "gato": "قطة",
+            "cachorro": "كلب",
+            "pássaro": "طائر"
+        },
+        bengali: {
+            "oi": "হ্যালো",
+            "olá": "হ্যালো",
+            "mundo": "বিশ্ব",
+            "como": "কেমন",
+            "vai": "হয়",
+            "você": "তুমি",
+            "bom": "ভাল",
+            "dia": "দিন",
+            "noite": "রাত",
+            "gato": "বিড়াল",
+            "cachorro": "কুকুর",
+            "pássaro": "পাখি"
+        },
+        frances: {
+            "oi": "salut",
+            "olá": "bonjour",
+            "mundo": "monde",
+            "como": "comment",
+            "vai": "vas",
+            "você": "tu",
+            "bom": "bon",
+            "dia": "jour",
+            "noite": "nuit",
+            "gato": "chat",
+            "cachorro": "chien",
+            "pássaro": "oiseau"
+        },
+        russo: {
+            "oi": "привет",
+            "olá": "здравствуй",
+            "mundo": "мир",
+            "como": "как",
+            "vai": "идёшь",
+            "você": "ты",
+            "bom": "хороший",
+            "dia": "день",
+            "noite": "ночь",
+            "gato": "кот",
+            "cachorro": "собака",
+            "pássaro": "птица"
+        },
+        urdu: {
+            "oi": "ہیلو",
+            "olá": "ہیلو",
+            "mundo": "دنیا",
+            "como": "کیسے",
+            "vai": "جا",
+            "você": "تم",
+            "bom": "اچھا",
+            "dia": "دن",
+            "noite": "رات",
+            "gato": "بلی",
+            "cachorro": "کتا",
+            "pássaro": "پرندہ"
+        },
+        indonesio: {
+            "oi": "hai",
+            "olá": "halo",
+            "mundo": "dunia",
+            "como": "bagaimana",
+            "vai": "akan",
+            "você": "kamu",
+            "bom": "baik",
+            "dia": "hari",
+            "noite": "malam",
+            "gato": "kucing",
+            "cachorro": "anjing",
+            "pássaro": "burung"
+        },
+        alema: {
+            "oi": "hallo",
+            "olá": "hallo",
+            "mundo": "welt",
+            "como": "wie",
+            "vai": "geht",
+            "você": "du",
+            "bom": "gut",
+            "dia": "tag",
+            "noite": "nacht",
+            "gato": "katze",
+            "cachorro": "hund",
+            "pássaro": "vogel"
+        },
+        japones: {
+            "oi": "こんにちは",
+            "olá": "こんにちは",
+            "mundo": "世界",
+            "como": "どう",
+            "vai": "いきます",
+            "você": "あなた",
+            "bom": "良い",
+            "dia": "日",
+            "noite": "夜",
+            "gato": "猫",
+            "cachorro": "犬",
+            "pássaro": "鳥"
+        },
+        swahili: {
+            "oi": "habari",
+            "olá": "habari",
+            "mundo": "dunia",
+            "como": "vipi",
+            "vai": "unaenda",
+            "você": "wewe",
+            "bom": "nzuri",
+            "dia": "siku",
+            "noite": "usiku",
+            "gato": "paka",
+            "cachorro": "mbwa",
+            "pássaro": "ndege"
+        },
+        marathi: {
+            "oi": "नमस्कार",
+            "olá": "नमस्कार",
+            "mundo": "जग",
+            "como": "कसे",
+            "vai": "आहेस",
+            "você": "तू",
+            "bom": "चांगला",
+            "dia": "दिवस",
+            "noite": "रात्र",
+            "gato": "बिल्ली",
+            "cachorro": "कुत्रा",
+            "pássaro": "पक्षी"
+        },
+        telugu: {
+            "oi": "హలో",
+            "olá": "హలో",
+            "mundo": "ప్రపంచం",
+            "como": "ఎలా",
+            "vai": "వస్తుంది",
+            "você": "మీరు",
+            "bom": "మంచి",
+            "dia": "రోజు",
+            "noite": "రాత్రి",
+            "gato": "బిల్లి",
+            "cachorro": "కుక్క",
+            "pássaro": "పక్షి"
+        },
+        turco: {
+            "oi": "merhaba",
+            "olá": "merhaba",
+            "mundo": "dünya",
+            "como": "nasılsın",
+            "vai": "gidiyorsun",
+            "você": "sen",
+            "bom": "iyi",
+            "dia": "gün",
+            "noite": "gece",
+            "gato": "kedi",
+            "cachorro": "köpek",
+            "pássaro": "kuş"
+        },
+        tamil: {
+            "oi": "ஹலோ",
+            "olá": "ஹலோ",
+            "mundo": "உலகம்",
+            "como": "எப்படி",
+            "vai": "நீ",
+            "você": "நீ",
+            "bom": "நல்லது",
+            "dia": "நாள்",
+            "noite": "இரவு",
+            "gato": "பில்லி",
+            "cachorro": "நாய்",
+            "pássaro": "பறவை"
+        },
+        vietnamita: {
+            "oi": "xin chào",
+            "olá": "xin chào",
+            "mundo": "thế giới",
+            "como": "thế nào",
+            "vai": "có",
+            "você": "bạn",
+            "bom": "tốt",
+            "dia": "ngày",
+            "noite": "đêm",
+            "gato": "mèo",
+            "cachorro": "chó",
+            "pássaro": "chim"
+        },
+        coreano: {
+            "oi": "안녕하세요",
+            "olá": "안녕하세요",
+            "mundo": "세계",
+            "como": "어떻게",
+            "vai": "당신은",
+            "você": "당신",
+            "bom": "좋은",
+            "dia": "일",
+            "noite": "밤",
+            "gato": "고양이",
+            "cachorro": "개",
+            "pássaro": "새"
+        }
+    };
+
+    let idiomaSelecionado = '';
+
+function selectLanguage(idioma) {
+    idiomaSelecionado = idioma;
+    document.getElementById('selected-language').innerText = idioma.charAt(0).toUpperCase() + idioma.slice(1);
+    toggleDropdown(); // Fecha o dropdown ao selecionar
+}
+
+function toggleDropdown() {
+    document.getElementById('language-dropdown').classList.toggle('show');
+}
+
+function traduzir() {
+    const frase = document.getElementById('frase').value.toLowerCase();
+    const resultado = frase.split(' ').map(palavra => {
+        return dicionarios[idiomaSelecionado][palavra] || palavra; // Retorna a palavra traduzida ou a original
+    }).join(' ');
+
+    document.getElementById('resultado').innerText = resultado || 'Por favor, digite uma frase e selecione um idioma.';
+}
+
+function toggleDropdown() {
+    const dropdown = document.getElementById('language-dropdown');
+    dropdown.classList.toggle('show');
+}
+
+function traduzir() {
+    const frase = document.getElementById('frase').value.toLowerCase();
+    const palavras = frase.split(' ');
+    let resultado = '';
+    let palavrasNaoEncontradas = [];
+
+    resultado = palavras.map(palavra => {
+        if (dicionarios[idiomaSelecionado][palavra]) {
+            return dicionarios[idiomaSelecionado][palavra]; // Retorna a palavra traduzida
+        } else {
+            palavrasNaoEncontradas.push(palavra); // Adiciona a palavra não encontrada
+            return palavra; // Retorna a palavra original
+        }
+    }).join(' ');
+
+    document.getElementById('resultado').innerText = resultado || 'Por favor, digite uma frase e selecione um idioma.';
+
+    // Se houver palavras não encontradas, exibe um alerta
+    if (palavrasNaoEncontradas.length > 0) {
+        alert(`Essa mensagem não está disponível, tente outra. Opções: ${Object.keys(dicionarios[idiomaSelecionado]).join(', ')}`);
+    }
+}
+// Chama a função main ao carregar a página
+window.onload = main;
+</script>
+
+</body>
+</html>
